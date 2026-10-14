@@ -1,136 +1,140 @@
 # Telecom Customer Churn Prediction
 
-A machine learning project that explores customer churn in a large telecom dataset and builds predictive models to identify customers at higher risk of leaving.
+An end-to-end machine learning project for predicting telecom customer churn and translating model results into practical retention opportunities.
 
-The project combines exploratory data analysis, feature engineering, model comparison, performance evaluation, and business-oriented interpretation.
-
-## Project Objective
-
-The goal is to use customer-level telecom data to:
-
-- understand the main factors associated with churn
-- build models that can estimate churn risk
-- compare multiple machine learning approaches
-- identify the most influential features
-- translate model results into practical business insights
+The project merges customer-profile and usage records, performs exploratory data analysis, trains a CatBoost classifier, engineers behavioral features, evaluates churn risk, and creates business-oriented customer segments.
 
 ## Dataset
 
-- **100,000 rows**
+Two source files are merged on `Customer_ID`:
+
+- `Client.csv`
+- `Record.csv`
+
+The merged dataset in the recorded experiment contained:
+
+- **100,000 customers**
 - **100 columns**
-- Target variable: customer churn
-- Class distribution:
-  - Non-churn: 50,438
-  - Churn: 49,562
+- **50,438 non-churned customers**
+- **49,562 churned customers**
 
-The target is close to balanced, which makes metrics such as ROC-AUC, recall, and accuracy useful for model comparison.
+The raw telecom data is not committed to this repository.
 
-## Workflow
+## Modeling Approach
 
-1. Data inspection and cleaning
-2. Exploratory Data Analysis (EDA)
-3. Feature preparation
-4. Feature engineering
-5. Model training
-6. Cross-validation
-7. Test-set evaluation
-8. Feature-importance analysis
-9. Business interpretation
+The workflow uses:
 
-## Models
+- an 80/20 stratified train/test split
+- CatBoost for mixed numerical and categorical data
+- 5-fold stratified cross-validation
+- ROC-AUC as the primary model metric
 
-The project evaluates multiple models, including:
+### Feature Engineering
 
-- Random Forest
-- CatBoost
-
-### CatBoost
-
-- 5-fold cross-validation ROC-AUC: **0.6873**
-- Test ROC-AUC: **0.6878**
-
-### Random Forest
-
-- Test ROC-AUC: **0.6952**
-- Accuracy: **0.63695**
-- Recall: **0.65**
-
-Random Forest achieved the strongest test ROC-AUC among the reported models.
-
-## Important Features
-
-Some of the most influential features include:
-
-| Feature | Importance |
-|---|---:|
-| months | 14.58 |
-| eqpdays | 12.21 |
-| change_mou | 7.79 |
-| mou_Mean | 7.59 |
-| totmrc_Mean | 5.09 |
-
-These features suggest that customer tenure, equipment age, changes in usage behavior, average minutes of use, and recurring charges are important signals for churn prediction.
-
-## Feature Engineering Experiments
-
-Additional engineered features were tested, including:
+The final model adds:
 
 - `rev_per_min`
 - `rev_ratio`
+- `mou_ratio`
+- `eqp_years`
+- `overage_ratio`
+- `revenue_per_month`
 
-Reported ROC-AUC results:
+## Recorded Results
 
-- `rev_per_min`: **0.6876**
-- `rev_ratio`: **0.6908**
+| Experiment | ROC-AUC |
+| --- | ---: |
+| CatBoost baseline, 5-fold CV | **0.6876** |
+| CatBoost + engineered features, 5-fold CV | **0.6965** |
+| Final engineered model, held-out test | **0.6952** |
 
-## Customer Segmentation
+Additional held-out test metrics:
 
-Customers were also grouped into business-oriented segments:
+- **Accuracy:** 0.63695
+- **Recall for churn:** 0.65
 
-- Low
-- Medium
-- High
-- VIP
+The model is intended primarily to rank customers by churn risk rather than optimize accuracy alone.
 
-This supports more targeted retention strategies instead of treating all customers in the same way.
+## Business Insights
 
-## Business Value
+The analysis also creates practical retention segments.
 
-A churn model can help a telecom company prioritize retention activity by identifying customers who may need:
+Recorded observations include:
 
-- proactive engagement
-- targeted offers
-- service-quality follow-up
-- pricing or plan review
-- loyalty interventions
+- Older-device customers: **55.38% churn**
+- Newer-device customers: **43.79% churn**
+- Customers with declining usage and revenue: **51.80% churn**
+- Customers with inactive lines: **56.02% churn**
+- High-value customers with older devices: **55.67% churn**
 
-The objective is not only to predict churn, but to support more focused business decisions.
+These patterns suggest opportunities for:
 
-## Repository Contents
+- device-upgrade campaigns
+- proactive outreach to declining-usage customers
+- retention offers for high-value customers
+- plan reviews for customers with inactive lines
 
-- `Copy of Final Assignment  Original.ipynb` — full analysis and modeling notebook
-- `Final Assignment.pdf` — project presentation / report
+These are dataset associations and should not be interpreted as causal effects.
+
+## Repository Structure
+
+```text
+Telecom_Project/
+├── telecom_churn_analysis.ipynb
+├── Final Assignment.pdf
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+The PDF contains the original project presentation/report.
+
+## Run Locally
+
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Add the data
+
+Create:
+
+```text
+telecom/
+├── Client.csv
+└── Record.csv
+```
+
+### 3. Open the notebook
+
+```text
+telecom_churn_analysis.ipynb
+```
 
 ## Tech Stack
 
 - Python
-- Pandas
+- pandas
 - NumPy
-- Scikit-learn
+- Matplotlib
+- Seaborn
+- scikit-learn
 - CatBoost
 - Jupyter Notebook
-- Matplotlib
 
-## Key Takeaways
+## Possible Next Improvements
 
-- Churn prediction in this dataset is challenging, with ROC-AUC values around 0.69.
-- Random Forest produced the strongest reported test ROC-AUC.
-- Behavioral and tenure-related features are among the most useful predictors.
-- Feature engineering produced small but measurable improvements.
-- Model outputs can be combined with customer segmentation to support retention decisions.
+- hyperparameter optimization
+- probability calibration
+- SHAP explanations
+- LightGBM/XGBoost comparison
+- time-based validation
+- cost-sensitive retention thresholds
 
 ## Author
 
 **Eman Barakat**
 
-AI & Software Development | Data Analysis | Machine Learning | Generative AI
+AI & Software Development | Data Analysis | Machine Learning
