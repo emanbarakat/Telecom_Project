@@ -55,6 +55,8 @@ Additional held-out test metrics:
 
 The model is intended primarily to rank customers by churn risk rather than optimize accuracy alone.
 
+These figures are retained as **recorded results from the original project run**. The cleaned notebook was not rerun end-to-end during the portfolio cleanup because the raw dataset is not included, so this repository should not be read as a claim of fresh reproducibility testing.
+
 ## Business Insights
 
 The analysis also creates practical retention segments.
