@@ -1,6 +1,6 @@
 # Telecom Customer Churn Prediction
 
-An end-to-end machine learning project for predicting telecom customer churn and translating model results into practical retention opportunities.
+A machine learning project for predicting telecom customer churn and translating model results into practical retention opportunities.
 
 The project merges customer-profile and usage records, performs exploratory data analysis, trains a CatBoost classifier, engineers behavioral features, evaluates churn risk, and creates business-oriented customer segments.
 
@@ -79,7 +79,7 @@ These are dataset associations and should not be interpreted as causal effects.
 ## Repository Structure
 
 ```text
-Telecom_Project/
+telecom-churn-prediction/
 ├── telecom_churn_analysis.ipynb
 ├── Final Assignment.pdf
 ├── requirements.txt
@@ -136,5 +136,3 @@ telecom_churn_analysis.ipynb
 ## Author
 
 **Eman Barakat**
-
-AI & Software Development | Data Analysis | Machine Learning
